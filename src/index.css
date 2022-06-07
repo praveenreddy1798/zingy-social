@@ -1,13 +1,17 @@
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
-  }
+@import url("./themes/colors.css");
+@import url("./themes/reset.css");
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: var(--primary);
+}
+
+.site-layout .site-layout-background {
+  background: var(--white);
+}
+
+.ant-card-actions > li > span > span > svg {
+  font-size: 1.5em;
+}
+
+.bookmark-icon {
+  font-size: 1.5em;
+}

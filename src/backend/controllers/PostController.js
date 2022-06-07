@@ -60,10 +60,10 @@ export const getAllUserPostsHandler = function (schema, request) {
 /**
  * This handler handles creating a post in the db.
  * send POST Request at /api/user/posts/
- * body contains {content}
+ * body contains {title and description}
  * */
 
-export const createPostHandler = function (schema, request) {
+export const createPostHandler = async function (schema, request) {
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -77,19 +77,48 @@ export const createPostHandler = function (schema, request) {
         }
       );
     }
-    const { postData } = JSON.parse(request.requestBody);
-    const post = {
+    const postData = request.requestBody;
+    const title = postData.get("title");
+    const description = postData.get("description");
+    let post = {
       _id: uuid(),
-      ...postData,
+      title: title,
+      description: description,
       likes: {
         likeCount: 0,
         likedBy: [],
         dislikedBy: [],
       },
       username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      profilePic: user.profilePic || null,
       createdAt: formatDate(),
       updatedAt: formatDate(),
     };
+    if (postData.get("file") !== "null") {
+      postData.append(
+        "cloud_name",
+        process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
+      );
+      postData.append(
+        "upload_preset",
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+      );
+      const { url } = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "post",
+          body: postData,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => data)
+        .catch((err) => {
+          console.log(err);
+        });
+      post = { ...post, photo: url };
+    }
     this.db.posts.insert(post);
     return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {
@@ -108,7 +137,7 @@ export const createPostHandler = function (schema, request) {
  * send POST Request at /api/posts/edit/:postId
  * body contains { postData }
  * */
-export const editPostHandler = function (schema, request) {
+export const editPostHandler = async function (schema, request) {
   const user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -123,7 +152,6 @@ export const editPostHandler = function (schema, request) {
       );
     }
     const postId = request.params.postId;
-    const { postData } = JSON.parse(request.requestBody);
     let post = schema.posts.findBy({ _id: postId }).attrs;
     if (post.username !== user.username) {
       return new Response(
@@ -134,7 +162,40 @@ export const editPostHandler = function (schema, request) {
         }
       );
     }
-    post = { ...post, ...postData };
+    const postData = request.requestBody;
+    const title = postData.get("title");
+    const description = postData.get("description");
+    const isPicRemoved = postData.get("isPicRemoved");
+    post = {
+      ...post,
+      _id: postId,
+      title,
+      description,
+      photo: isPicRemoved ? null : post.photo,
+    };
+    if (!(postData.get("file") === null)) {
+      postData.append(
+        "cloud_name",
+        process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
+      );
+      postData.append(
+        "upload_preset",
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+      );
+      const { url } = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "post",
+          body: postData,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => data)
+        .catch((err) => {
+          console.log(err);
+        });
+      post = { ...post, photo: url };
+    }
     this.db.posts.update({ _id: postId }, post);
     return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {
@@ -168,21 +229,30 @@ export const likePostHandler = function (schema, request) {
       );
     }
     const postId = request.params.postId;
+
     const post = schema.posts.findBy({ _id: postId }).attrs;
-    if (post.likes.likedBy.some((currUser) => currUser._id === user._id)) {
+
+    if (
+      post.likes.likedBy.some((currUser) => currUser.username === user.username)
+    ) {
       return new Response(
         400,
         {},
         { errors: ["Cannot like a post that is already liked. "] }
       );
     }
+
     post.likes.dislikedBy = post.likes.dislikedBy.filter(
-      (currUser) => currUser._id !== user._id
+      (currUser) => currUser.username !== user.username
     );
+
     post.likes.likeCount += 1;
+
     post.likes.likedBy.push(user);
+
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
-    return new Response(201, {}, { posts: this.db.posts });
+
+    return new Response(201, {}, { posts: this.db.posts, post });
   } catch (error) {
     return new Response(
       500,
@@ -222,7 +292,11 @@ export const dislikePostHandler = function (schema, request) {
         { errors: ["Cannot decrement like less than 0."] }
       );
     }
-    if (post.likes.dislikedBy.some((currUser) => currUser._id === user._id)) {
+    if (
+      post.likes.dislikedBy.some(
+        (currUser) => currUser.username === user.username
+      )
+    ) {
       return new Response(
         400,
         {},
@@ -231,12 +305,12 @@ export const dislikePostHandler = function (schema, request) {
     }
     post.likes.likeCount -= 1;
     const updatedLikedBy = post.likes.likedBy.filter(
-      (currUser) => currUser._id !== user._id
+      (currUser) => currUser.username !== user.username
     );
     post.likes.dislikedBy.push(user);
     post = { ...post, likes: { ...post.likes, likedBy: updatedLikedBy } };
     this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
-    return new Response(201, {}, { posts: this.db.posts });
+    return new Response(201, {}, { posts: this.db.posts, post });
   } catch (error) {
     return new Response(
       500,
