@@ -66,7 +66,7 @@ export const editUserHandler = async function (schema, request) {
       firstName,
       lastName,
       bio,
-      portfolio,
+      portfolio: portfolio && portfolio !== "null" ? portfolio : null,
       profilePic: userDetails.isPicRemoved ? null : user.profilePic,
       updatedAt: formatDate(),
     };
