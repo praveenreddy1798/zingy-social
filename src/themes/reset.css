@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  font-family: "Montserrat", sans-serif;
+}
+
+@media only screen and (max-width: 1000px) {
+  html {
+    font-size: 75%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  html {
+    font-size: 60%;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  html {
+    font-size: 50%;
+  }
+}

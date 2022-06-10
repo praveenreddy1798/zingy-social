@@ -20,9 +20,9 @@ export const getAllUsersHandler = function () {
  * */
 
 export const getUserHandler = function (schema, request) {
-  const userId = request.params.userId;
+  const username = request.params.username;
   try {
-    const user = schema.users.findBy({ _id: userId }).attrs;
+    const user = schema.users.findBy({ username }).attrs;
     return new Response(200, {}, { user });
   } catch (error) {
     return new Response(
@@ -41,7 +41,7 @@ export const getUserHandler = function (schema, request) {
  * body contains { userData }
  * */
 
-export const editUserHandler = function (schema, request) {
+export const editUserHandler = async function (schema, request) {
   let user = requiresAuth.call(this, request);
   try {
     if (!user) {
@@ -55,9 +55,45 @@ export const editUserHandler = function (schema, request) {
         }
       );
     }
-    const { userData } = JSON.parse(request.requestBody);
-    user = { ...user, ...userData, updatedAt: formatDate() };
-    this.db.users.update({ _id: user._id }, user);
+    const userData = request.requestBody;
+    let userDetails = {};
+    for (let [key, value] of userData.entries()) {
+      userDetails[key] = value;
+    }
+    const { firstName, lastName, bio, portfolio } = userDetails;
+    user = {
+      ...user,
+      firstName,
+      lastName,
+      bio,
+      portfolio,
+      profilePic: userDetails.isPicRemoved ? null : user.profilePic,
+      updatedAt: formatDate(),
+    };
+    if (userDetails["file"] !== "null") {
+      userData.append(
+        "cloud_name",
+        process.env.REACT_APP_CLOUDINARY_CLOUD_NAME
+      );
+      userData.append(
+        "upload_preset",
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+      );
+      const { url } = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "post",
+          body: userData,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => data)
+        .catch((err) => {
+          console.log(err);
+        });
+      user = { ...user, profilePic: url };
+    }
+    this.db.users.update({ username: user.username }, user);
     return new Response(201, {}, { user });
   } catch (error) {
     return new Response(
@@ -122,7 +158,7 @@ export const bookmarkPostHandler = function (schema, request) {
       );
     }
     const isBookmarked = user.bookmarks.some(
-      (currPost) => currPost._id === postId
+      (currPostId) => currPostId === postId
     );
     if (isBookmarked) {
       return new Response(
@@ -131,7 +167,7 @@ export const bookmarkPostHandler = function (schema, request) {
         { errors: ["This Post is already bookmarked"] }
       );
     }
-    user.bookmarks.push(post);
+    user.bookmarks.push(post._id);
     this.db.users.update(
       { _id: user._id },
       { ...user, updatedAt: formatDate() }
@@ -169,13 +205,13 @@ export const removePostFromBookmarkHandler = function (schema, request) {
       );
     }
     const isBookmarked = user.bookmarks.some(
-      (currPost) => currPost._id === postId
+      (currPostId) => currPostId === postId
     );
     if (!isBookmarked) {
       return new Response(400, {}, { errors: ["Post not bookmarked yet"] });
     }
     const filteredBookmarks = user.bookmarks.filter(
-      (currPost) => currPost._id !== postId
+      (currPostId) => currPostId !== postId
     );
     user = { ...user, bookmarks: filteredBookmarks };
     this.db.users.update(
@@ -242,7 +278,7 @@ export const followUserHandler = function (schema, request) {
     return new Response(
       200,
       {},
-      { user: updatedUser, followUser: updatedFollowUser }
+      { user: updatedUser, followUser: updatedFollowUser, users: this.db.users }
     );
   } catch (error) {
     return new Response(
@@ -304,10 +340,11 @@ export const unfollowUserHandler = function (schema, request) {
       { _id: followUser._id },
       { ...updatedFollowUser, updatedAt: formatDate() }
     );
+
     return new Response(
       200,
       {},
-      { user: updatedUser, followUser: updatedFollowUser }
+      { user: updatedUser, followUser: updatedFollowUser, users: this.db.users }
     );
   } catch (error) {
     return new Response(
