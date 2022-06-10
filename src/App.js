@@ -10,11 +10,11 @@ import {
   Login,
   Signup,
   NotFound,
-  // CreatePost,
+  CreatePost,
   // Bookmarks,
-  // EditPost,
+  EditPost,
   // EditProfile,
-  // PostDetail,
+  PostDetail,
   // Profile,
 } from "./containers";
 import { PrivateRoute, RestrictedRoute, Header, Sider } from "./components";
@@ -79,14 +79,14 @@ function App() {
                   />
                 }
               />
-              {/* <Route exact path="/posts/:postId" element={<PostDetail />} />
-              <Route exact path="/profile/:username" element={<Profile />} />
+              <Route exact path="/posts/:postId" element={<PostDetail />} />
+              {/* <Route exact path="/profile/:username" element={<Profile />} /> */}
               <Route element={<PrivateRoute />}>
                 <Route exact path="/post/create" element={<CreatePost />} />
                 <Route exact path="/post/edit/:id" element={<EditPost />} />
-                <Route exact path="/profile/edit" element={<EditProfile />} />
-                <Route exact path="/bookmarks" element={<Bookmarks />} />
-              </Route> */}
+                {/* <Route exact path="/profile/edit" element={<EditProfile />} />
+                <Route exact path="/bookmarks" element={<Bookmarks />} /> */}
+              </Route>
               <Route element={<RestrictedRoute />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
