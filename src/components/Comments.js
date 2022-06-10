@@ -196,7 +196,7 @@ const Comments = ({ postId }) => {
     <Spin spinning={commentsStatus === "loading"}>
       <Card>
         <h3>Comments</h3>
-        {commentsStatus !== "loading" && comments.length > 0 && (
+        {commentsStatus !== "loading" && comments?.length > 0 && (
           <CommentList comments={comments} />
         )}
         <Comment

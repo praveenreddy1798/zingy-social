@@ -11,7 +11,7 @@ import {
   Signup,
   NotFound,
   CreatePost,
-  // Bookmarks,
+  Bookmarks,
   EditPost,
   EditProfile,
   PostDetail,
@@ -85,7 +85,7 @@ function App() {
                 <Route exact path="/post/create" element={<CreatePost />} />
                 <Route exact path="/post/edit/:id" element={<EditPost />} />
                 <Route exact path="/profile/edit" element={<EditProfile />} />
-                {/* <Route exact path="/bookmarks" element={<Bookmarks />} /> */}
+                <Route exact path="/bookmarks" element={<Bookmarks />} />
               </Route>
               <Route element={<RestrictedRoute />}>
                 <Route path="/login" element={<Login />} />

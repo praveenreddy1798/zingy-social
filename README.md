@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+## Zingy Social
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Zingy Social is a social application to connect with people around the world.
 
-## Available Scripts
+## Application Links
 
-In the project directory, you can run:
+[Zingy Social Live](https://zingy-social-app.netlify.app/)
 
-### `yarn start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### P0
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Create a Post
+  - Like Post
+  - Comment & Replies
+- Edit & Delete Post
+- User Feed
+  - Sort by Date, Trending & Recent
+- User Profile
+  - Add Profile Picture
+  - Bio
+  - Portfolio URL
+  - Follow/Unfollow
+- Explore Page
+- Bookmark Post
+- Authentication
+  - Sign-up
+  - Login
+  - Logout
 
-### `yarn test`
+### P1
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Upload Images with Posts
+- Search for post or user
+- Loading & Alerts
 
-### `yarn build`
+### Zingy Social Screenshots
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<img width="1426" alt="Screenshot 2022-06-07 at 11 40 42 PM" src="https://user-images.githubusercontent.com/62658404/172453162-7ce26731-4234-4635-9bc9-ae47238da518.png">
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<img width="1418" alt="Screenshot 2022-06-07 at 11 40 58 PM" src="https://user-images.githubusercontent.com/62658404/172453188-8e47bd05-7326-46e0-80fc-e21748f96a71.png">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<img width="1426" alt="Screenshot 2022-06-07 at 11 41 14 PM" src="https://user-images.githubusercontent.com/62658404/172453214-8806e79c-4786-4943-820e-30348b433503.png">
 
-### `yarn eject`
+<img width="1439" alt="Screenshot 2022-06-07 at 11 41 24 PM" src="https://user-images.githubusercontent.com/62658404/172453227-ba9e0ecd-d4b2-47b1-9f55-a3bc09283eff.png">
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<img width="1440" alt="Screenshot 2022-06-08 at 1 05 10 AM" src="https://user-images.githubusercontent.com/62658404/172467386-8acba6b6-d204-418a-84f2-b4b82bb0a9fd.png">
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<img width="1434" alt="Screenshot 2022-06-08 at 1 05 29 AM" src="https://user-images.githubusercontent.com/62658404/172467401-fd89d6dd-106d-42a5-b7a2-05d8db0d9b07.png">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<img width="1433" alt="Screenshot 2022-06-08 at 1 05 54 AM" src="https://user-images.githubusercontent.com/62658404/172467422-54be1d6b-fb93-4922-a1d5-928e53b2eb72.png">
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<img width="1440" alt="Screenshot 2022-06-08 at 1 45 52 AM" src="https://user-images.githubusercontent.com/62658404/172474255-a788d9b1-1f08-41e8-8bad-fa2e3961c76d.png">
 
-## Learn More
+<img width="1440" alt="Screenshot 2022-06-08 at 1 46 02 AM" src="https://user-images.githubusercontent.com/62658404/172474280-50392996-25c9-4a79-91e3-638bf40ac2bc.png">
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<img width="1435" alt="Screenshot 2022-06-08 at 1 49 21 AM" src="https://user-images.githubusercontent.com/62658404/172474807-ff442f4c-cec6-4e63-a292-a73a9b7e4fce.png">

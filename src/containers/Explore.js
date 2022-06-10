@@ -40,7 +40,7 @@ const Explore = ({ width, searchValue, setSearchValue }) => {
   }
 
   return (
-    <Container style={{ marginRight: 0 }}>
+    <Container style={{ marginRight: 0, padding: "1rem" }}>
       <UsersCard width={width}>
         <Spin spinning={userStatus === "loading"}>
           <List
